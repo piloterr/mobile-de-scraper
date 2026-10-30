@@ -16,7 +16,7 @@ Use it for listing monitoring, price benchmarks, stock sourcing or market analyt
 | Endpoint | Path | Credits | What you get |
 |---|---|---|---|
 | [Mobile Ad API](#mobile-ad-api) | `/v2/mobile/ad` | 3 | Mobile Ad API. Fetch full car listing data from a mobile.de ad URL or numeric id. Returns pricing, specs, images and features via webunlocker. |
-| [Mobile Search API](#mobile-search-api) | `/v2/mobile/search` | 3 | Mobile Search API. Search car listings by URL or make/model code across mobile.de locales. Returns prices and pagination via webunlocker and Next.js RSC parsing. |
+| [Mobile Search API](#mobile-search-api) | `/v2/mobile/search` | 3 | Mobile Search API. Same mobile.de inventory for every locale. `locale` sets the language label and ad links, not which cars are returned. (3 credits) |
 
 ## Table of contents
 
@@ -55,7 +55,7 @@ Mobile Ad API. Fetch full car listing data from a mobile.de ad URL or numeric id
 | Parameter | Type | Required | Description |
 |---|---|---|---|
 | `query` | string | ✅ | Mobile ad URL or numeric ad id. |
-| `locale` | string | — | Target locale when `query` is a numeric ad id only (default: `fr`). Ignored for full ad URLs. |
+| `locale` | string | — | Language for this ad. The same numeric id stays reachable for fr, es, de, and en. |
 | `return_page_source` | boolean | — | When `true`, return the raw HTML page source as `{"result": "..."}` instead of structured JSON. Defaults to `false`. |
 
 ### Python example
@@ -178,7 +178,7 @@ Example response from the API reference, abridged — real values depend on the 
 
 ## Mobile Search API
 
-Mobile Search API. Search car listings by URL or make/model code across mobile.de locales. Returns prices and pagination via webunlocker and Next.js RSC parsing.
+Mobile Search API. Same mobile.de inventory for every locale. `locale` sets the language label and ad links, not which cars are returned. (3 credits)
 
 `GET | POST https://api.piloterr.com/v2/mobile/search` · **3 credits per request** · [Full reference](https://app.piloterr.com/openapi)
 
@@ -187,8 +187,8 @@ Mobile Search API. Search car listings by URL or make/model code across mobile.d
 | Parameter | Type | Required | Description |
 |---|---|---|---|
 | `query` | string | ✅ | Search URL or make/model code (`ms=`). |
-| `locale` | string | — | Target locale when `query` is a make/model code only (default: `fr`). |
-| `page` | number | — | 1-based page override for search URLs (`pageNumber=`, default: from URL or `1`). |
+| `locale` | string | — | Locale label for the results. The cars themselves stay the same for de, fr, and en. |
+| `page` | number | — | Page number, starting at 1. Same effect as page or pageNumber in the Mobile.de URL. |
 | `return_page_source` | boolean | — | When `true`, return the raw HTML page source as `{"result": "..."}` instead of structured JSON. Defaults to `false`. |
 
 ### Python example
